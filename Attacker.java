@@ -25,10 +25,10 @@ public class Attacker extends Thread {
         boolean castleGateCheck1 = castle.checkGateOne(Thread.currentThread().getName(), rAttackNumber, isAvailable);
 
         if (castleGateCheck1) {
-            System.out.println(Thread.currentThread().getName() + " Done with gate 1");
+            System.out.println(Thread.currentThread().getName() + " is at gate 1");
         } else {
             castle.checkGateTwo(Thread.currentThread().getName(), rAttackNumber);
-            System.out.println(Thread.currentThread().getName() + " Done with gate 2");
+            System.out.println(Thread.currentThread().getName() + " is at gate 2");
         }
 
     }
@@ -42,29 +42,29 @@ public class Attacker extends Thread {
 
             // Attackers raid the armory
 
-            // try {
-
-            // Thread.sleep(randomSleep(Thread.currentThread().getName()));
-            System.out.println(Thread.currentThread().getName() + " rAttckr_Attack: " + rAttackNumber + " weapon: "
-                    + armory.randomWeapon());
-
             try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
 
-            // } catch (InterruptedException e) {
-            // System.out.println("I woke up earlier than I should");
-            // }
+                Thread.sleep(randomSleep(Thread.currentThread().getName()));
+                System.out.println(Thread.currentThread().getName() + " rAttckr_Attack: " + rAttackNumber + " weapon: "
+                        + armory.randomWeapon());
+
+                // try {
+                // Thread.sleep(3000);
+                // } catch (InterruptedException e) {
+                // // TODO Auto-generated catch block
+                // e.printStackTrace();
+                // }
+
+            } catch (InterruptedException e) {
+                System.out.println("I woke up earlier than I should");
+            }
 
         }
     }
 
-    private synchronized int randomSleep(String string) {
+    private int randomSleep(String string) {
         int randomSleeper = (int) (Math.random() * 3000) + 2000;
-        System.out.println(string + " randomly napping " + randomSleeper + "ms");
+        // System.out.println(string + " randomly napping " + randomSleeper + "ms");
 
         return randomSleeper;
     }
