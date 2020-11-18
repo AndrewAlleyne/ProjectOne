@@ -16,7 +16,7 @@ public class projectOne {
         // @param
         King king = new King(castle);
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 6; i++) {
             /// Each attacker knows themself,has access to the Castle
             // @param i - Thread identity
             // @param castle
@@ -24,7 +24,7 @@ public class projectOne {
             attacker.start();
         }
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 6; i++) {
             // Each defender knows themself,has access to the Castle
             // @param i - Thread identity
             // @param castle
