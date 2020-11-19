@@ -2,6 +2,7 @@ import java.util.Vector;
 
 public class Castle {
 
+    private static boolean resetWave = false;
     private Gate gateOne;
     private Gate gateTwo;
     private static MyObject lockA = new MyObject();
@@ -31,6 +32,9 @@ public class Castle {
     // totalDefendereDamage
     static int totalDefendereDamage;
 
+    //label for company 
+    
+
     public Castle(Gate gateOne, Gate gateTwo) {
         this.gateOne = gateOne;
         this.gateTwo = gateTwo;
@@ -46,7 +50,7 @@ public class Castle {
         // gate#Space computes remaining spaces at gate.
         synchronized (lockA) {
 
-            int gateOneSpace = gateOne.gateSpace(name);
+            int gateOneSpace = gateOne.gateSpace(name, resetWave);
             if (gateOneSpace > 0) {
 
                 // grab total rAttackNumber
@@ -65,7 +69,7 @@ public class Castle {
 
                             lockA.wait();
 
-                            System.err.println(name + " RELEASED! ");
+                            System.err.println(name + " RELEASED ! ");
 
                             break;
                         } catch (InterruptedException e) {
@@ -76,6 +80,8 @@ public class Castle {
                 }
                 return true;
             } else {
+
+                //label the company. 
                 System.out.println(name + " ==> Checking gate 2");
 
                 // Do not need this as yet remove !
@@ -95,7 +101,7 @@ public class Castle {
         // Build it similar to rwcv
 
         synchronized (lockA) {
-            int gateTwoSpace = gateTwo.gateSpace(name);
+            int gateTwoSpace = gateTwo.gateSpace(name, resetWave);
 
             if (gateTwoSpace > 0) {
                 totalAttackerDamage += rAttackNumber;
@@ -123,7 +129,6 @@ public class Castle {
                 } else if (activeWaitingDefenders.size() == 6 && activeWaitingAttakcers.size() == 6) {
                     System.out.println();
 
-                    System.out.println(name + " Are there enough defenders?! We are ready to attack");
                     System.out.println("======= Attackers sum up to : ======= " + totalAttackerDamage);
 
                     System.out.println();
@@ -131,13 +136,19 @@ public class Castle {
                     System.out.println(name + " is at gate 2");
                     lockA.notifyAll();
 
+                    System.out.println(name + " is here. Let the battle begin!");
+                    sumUpAttackerDefenderValues();
+
                 }
 
             } else {
-                System.out.println("didnt make it to gate 2. Waiting for available space to proceed! ");
+                System.out.println(name + " didnt make it to gate 2. Waiting for available space to proceed! ");
 
                 // I need to deal with the incoming threads.
-                remainingWaitingAttakcers.addElement(lockA);
+
+                
+                // resetWave for another attack
+                resetWave = true;
 
                 // 1: Create a function that if remaining attackers are == 6
                 // 2: then we bring them back into the waiting queue.
@@ -228,19 +239,23 @@ public class Castle {
                 } else if (activeWaitingDefenders.size() == 6 && activeWaitingAttakcers.size() == 6) {
                     System.out.println();
 
-                    System.out.println(name + " Are there enough defenders?! We are ready to attack");
                     System.out.println("======= Defenders sum up to : ======= " + totalDefendereDamage);
 
                     System.out.println();
 
                     System.out.println(name + " is at gate 2");
                     lockA.notifyAll();
+                    System.out.println(name + " is here. Let the battle begin!");
+
+                    // last thread sums up totalAttacker and totalDefender values.
+
+                    sumUpAttackerDefenderValues();
 
                 }
                 // 1: Should put data structure to record gate assignment
 
             } else {
-                System.out.println("didnt make it to gate 2. Waiting for available space to proceed! ");
+                System.out.println(name + " didnt make it to gate 2. Waiting for available space to proceed! ");
 
                 // I need to deal with the incoming threads.
                 remainingWaitingDefenders.addElement(lockA);
@@ -251,6 +266,43 @@ public class Castle {
 
         }
 
+    }
+
+    private void sumUpAttackerDefenderValues() {
+
+        /*
+         * // remainingWaitingAttakcers and remainingWaitingDefenders will wait for a
+         * signal on an object for when they can enter the battle.
+         */
+
+        if (totalDefendereDamage > totalAttackerDamage) {
+            System.out.println("Attackers are overwhelmed by Defenders");
+
+            // simulate sleep
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            // simulate sleep
+
+            // clear the vectors for both attackers and defenders
+            activeWaitingAttakcers.clear();
+            activeWaitingDefenders.clear();
+
+            System.out.println("activeDefendersSize: " + activeWaitingDefenders.size() + "activeAttackers: "
+                    + activeWaitingAttakcers.size());
+
+            if (activeWaitingAttakcers.isEmpty()) {
+
+                // Give king a chance to run away
+                King.kingPackNow(activeWaitingAttakcers.size(), lockA);
+            }
+        } else if (totalAttackerDamage > totalDefendereDamage) {
+            System.out.println(" Defenders are overwhelmed by Attackers");
+
+        }
     }
 
 }

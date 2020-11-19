@@ -19,17 +19,19 @@ public class Attacker extends Thread {
     }
 
     public void run() {
+        // while (true) {
+            raidArmory();
 
-        raidArmory();
+            boolean castleGateCheck1 = castle.checkGateOne(Thread.currentThread().getName(), rAttackNumber,
+                    isAvailable);
 
-        boolean castleGateCheck1 = castle.checkGateOne(Thread.currentThread().getName(), rAttackNumber, isAvailable);
-
-        if (castleGateCheck1) {
-            System.out.println(Thread.currentThread().getName() + " is at gate 1");
-        } else {
-            castle.checkGateTwo(Thread.currentThread().getName(), rAttackNumber);
-            System.out.println(Thread.currentThread().getName() + " is at gate 2");
-        }
+            if (castleGateCheck1) {
+                System.out.println(Thread.currentThread().getName() + " is at gate 1");
+            } else {
+                castle.checkGateTwo(Thread.currentThread().getName(), rAttackNumber);
+                System.out.println(Thread.currentThread().getName() + " is at gate 2");
+            }
+        // }
 
     }
 

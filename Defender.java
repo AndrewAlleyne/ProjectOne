@@ -20,7 +20,7 @@ public class Defender extends Thread {
 
     public void run() {
         // Defenders raid the armory
-
+        // while (true) {
         raidArmory();
 
         boolean castleGateCheck = castle.def_checkGateOne(Thread.currentThread().getName(), rAttackNumber, isAvailable);
@@ -31,6 +31,7 @@ public class Defender extends Thread {
             castle.def_checkGateTwo(Thread.currentThread().getName(), rAttackNumber);
             System.out.println(Thread.currentThread().getName() + " is at gate 2");
         }
+        // }
 
     }
 
@@ -48,8 +49,8 @@ public class Defender extends Thread {
 
             try {
                 Thread.sleep(randomSleep());
-                System.out.println(
-                        Thread.currentThread().getName() + " rDef_Attack: " + rAttackNumber + armory2.randomWeapon());
+                System.out.println(Thread.currentThread().getName() + " rDef_Attack: " + rAttackNumber + " "
+                        + armory2.randomWeapon());
 
             } catch (InterruptedException e) {
                 System.out.println("I woke up earlier than I should");

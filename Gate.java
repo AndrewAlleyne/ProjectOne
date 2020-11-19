@@ -13,7 +13,12 @@ public class Gate {
 
     }
 
-    public int gateSpace(String name) {
+    public int gateSpace(String name, boolean resetWave) {
+
+        if (resetWave) {
+            AgateSpace = 3;
+            resetWave = false;
+        }
 
         return AgateSpace--;
 

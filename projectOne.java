@@ -7,16 +7,18 @@ public class projectOne {
         int playerSpace = 3;
         int castleGates = 2;
 
+        // Different gates that are available.
         Gate gateOne = new Gate(playerSpace, castleGates);
         Gate gateTwo = new Gate(playerSpace, castleGates);
 
+        // Castle grounds contains gates and access to the king
         Castle castle = new Castle(gateOne, gateTwo);
         // The king has access to the castle and will often periodically check to see if
         // he can escape
         // @param
         King king = new King(castle);
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 12; i++) {
             /// Each attacker knows themself,has access to the Castle
             // @param i - Thread identity
             // @param castle
@@ -24,7 +26,7 @@ public class projectOne {
             attacker.start();
         }
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 12; i++) {
             // Each defender knows themself,has access to the Castle
             // @param i - Thread identity
             // @param castle
